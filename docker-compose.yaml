@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  mysql_server_projeto:
+    image: mysql:5.7
+    hostname: mysql
+    ports:
+      - 3306:3306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: online_exam
