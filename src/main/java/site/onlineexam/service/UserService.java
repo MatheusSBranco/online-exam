@@ -17,26 +17,51 @@ public class UserService {
     }
 
     public void createUser(User user) {
-        userRepository.save(user);
+        try{
+            userRepository.save(user);
+        } catch (Exception e){
+            throw new RuntimeException("Error creating user: "+ e.getMessage());
+        }        
     }
 
     public Optional<User> findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id: " + id));
+        try{
+            return userRepository.findByEmail(email);
+        } catch(Exception e){
+            throw new RuntimeException("Error finding user by email: "+ e.getMessage());
+        }        
     }
 
     public List<User> getAllUsers(){
-        return userRepository.findAll();
+        try {
+            return userRepository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting all users: " + e.getMessage());
+        }
+    }
+
+    public User getUserById(Long id) {
+        try {
+            return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id: " + id));
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting user by id: " + e.getMessage());
+        }
+    }    
+
+    public void updateUser(User user) {
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating user: " + e.getMessage());
+        }
     }
 
     public void deleteUser(Long id){
-        userRepository.deleteById(id);
-    }
-
-    public void updateUser(User user) {
-        userRepository.save(user);
-    }
+        try {
+            userRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting user: " + e.getMessage());
+        }
+    }    
 }
