@@ -9,30 +9,33 @@
     <title>User List</title>
 </head>
 <body>
-    <div class="container-fluid p-5 text-center">
-        <h1>User List</h1>
-    </div>
-   <table class="table table-striped table-hover table-bordered table-sm table-group-divider">
-      <thead>
-         <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-         </tr>
-      </thead>
-      <tbody>
-         <tr th:each="user : ${users}">
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${user.role}"></td>
-            <td>
-                <a style="--bs-link-opacity: .5" th:href="@{/users/edit/{id}(id=${user.id})}">Edit</a> <br>
-                <a style="--bs-link-opacity: .5" th:href="@{/users/delete/{id}(id=${user.id})}">Delete</a>
-            </td>
-         </tr>
-      </tbody>
-   </table>
+   <div class="container-fluid p-5 text-center">
+      <h1>User List</h1>
+   </div>
+   <div class="table-responsive-sm">
+      <table class="table table-striped table align-middle table-hover table-bordered table-sm table-group-divider">
+         <thead>
+            <tr>
+               <th class="col-auto">Name</th>
+               <th class="col-auto">Email</th>
+               <th class="col-auto">Role</th>
+               <th class="col-auto">Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr th:each="user : ${users}">
+               <td th:text="${user.name}"></td>
+               <td th:text="${user.email}"></td>
+               <td th:text="${user.role}"></td>
+               <td>
+                   <a style="--bs-link-opacity: .5" th:href="@{/users/edit/{id}(id=${user.id})}">Edit</a> <br>
+                   <a style="--bs-link-opacity: .5" th:href="@{/users/delete/{id}(id=${user.id})}">Delete</a>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+   
    <div class="container-fluid">
     <button onclick="window.location.href='/';">Home</button>
     <button onclick="window.location.href='/users/new';">New User</button>
