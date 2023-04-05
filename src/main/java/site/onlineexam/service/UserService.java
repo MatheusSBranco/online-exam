@@ -3,8 +3,12 @@ package site.onlineexam.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
+import site.onlineexam.exception.UserException;
 import site.onlineexam.model.User;
 import site.onlineexam.repository.UserRepository;
 
@@ -17,51 +21,61 @@ public class UserService {
     }
 
     public void createUser(User user) {
-        try{
-            userRepository.save(user);
-        } catch (Exception e){
-            throw new RuntimeException("Error creating user: "+ e.getMessage());
-        }        
+        userRepository.save(user);       
     }
 
     public Optional<User> findUserByEmail(String email) {
         try{
             return userRepository.findByEmail(email);
-        } catch(Exception e){
-            throw new RuntimeException("Error finding user by email: "+ e.getMessage());
+        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+            HttpStatusCode statusCode = ex.getStatusCode();
+            String statusText = ex.getStatusText();
+            String message = ex.getMessage();
+            throw new RuntimeException("Error finding user by email: " + statusCode + " " + statusText + " " + message);
         }        
     }
 
     public List<User> getAllUsers(){
         try {
             return userRepository.findAll();
-        } catch (Exception e) {
-            throw new RuntimeException("Error getting all users: " + e.getMessage());
+        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+            HttpStatusCode statusCode = ex.getStatusCode();
+            String statusText = ex.getStatusText();
+            String message = ex.getMessage();
+            throw new RuntimeException("Error getting all users: " + statusCode + " " + statusText + " " + message);
         }
     }
 
     public User getUserById(Long id) {
         try {
             return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id: " + id));
-        } catch (Exception e) {
-            throw new RuntimeException("Error getting user by id: " + e.getMessage());
+                .orElseThrow(() -> new UserException("Invalid user ID", "User ID: " + id));
+        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+            HttpStatusCode statusCode = ex.getStatusCode();
+            String statusText = ex.getStatusText();
+            String message = ex.getMessage();
+            throw new RuntimeException("Error getting user by Id: " + statusCode + " " + statusText + " " + message);
         }
     }    
 
     public void updateUser(User user) {
-        try {
-            userRepository.save(user);
-        } catch (Exception e) {
-            throw new RuntimeException("Error updating user: " + e.getMessage());
-        }
+        userRepository.save(user);
     }
 
     public void deleteUser(Long id){
         try {
-            userRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Error deleting user: " + e.getMessage());
+            Optional<User> user = userRepository.findById(id);
+            if(user.isPresent()) {
+                userRepository.deleteById(id);
+            } else {
+                throw new UserException("Invalid user ID", "User ID: " + id);
+            }
+            
+        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+            HttpStatusCode statusCode = ex.getStatusCode();
+            String statusText = ex.getStatusText();
+            String message = ex.getMessage();
+            throw new RuntimeException("Error deleting user: " + statusCode + " " + statusText + " " + message);
         }
     }    
 }
