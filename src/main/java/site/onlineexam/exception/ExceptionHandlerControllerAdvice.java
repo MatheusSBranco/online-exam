@@ -5,10 +5,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.exceptions.TemplateInputException;
 
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {
-    
+ 
     @ExceptionHandler(Exception.class)
     public String handleException(Model model, Exception e){
         model.addAttribute("errorMsg", e.getMessage());
@@ -38,5 +40,12 @@ public class ExceptionHandlerControllerAdvice {
         model.addAttribute("errorMsg", e.getMessage());
         model.addAttribute("data", e.getData());
         return "error";
-}
+    }
+
+    @ExceptionHandler(TemplateInputException.class)
+    public ModelAndView handleTemplateInputException(TemplateInputException ex) {
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("errorMessage", "An error occurred while processing the template: " + ex.getMessage());
+        return modelAndView;
+    }
 }
