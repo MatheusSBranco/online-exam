@@ -19,13 +19,9 @@
             <thead>
                 <tr>
                     <th>Statement</th>
-                    <th>Type</th>
-                    <th>Difficulty</th>
                     <th>Discipline</th>
                     <th>Theme</th>
                     <th>Tags</th>
-                    <th>Created by</th>
-                    <th>Created on</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -36,15 +32,11 @@
                             <span th:text="${question.statement}"></span>
                         </a>
                     </td>
-                    <td th:text="${question.questionType}"></td>
-                    <td th:text="${question.difficultyLevel}"></td>
                     <td th:text="${question.discipline.name}"></td>
                     <td th:text="${question.theme.name}"></td>
                     <td>
                         <span th:each="tag : ${question.tags}" th:text="${tag.name} + '  '"></span>
                     </td>
-                    <td th:text="${question.createdBy}"></td>
-                    <td th:text="${question.creationDate}"></td>
                     <td>
                         <a th:href="@{/questions/{id}/edit(id=${question.id})}">Edit</a>
                         <a th:href="@{/questions/{id}/delete(id=${question.id})}">Delete</a>
@@ -53,8 +45,11 @@
             </tbody>
         </table>
         
-        <a th:href="@{/questions/add}">New Question</a> 
-    </div>
+        <div class="container-fluid">
+            <button class="btn btn-primary" onclick="window.location.href='/';">Home</button>
+            <button class="btn btn-primary" onclick="window.location.href='/questions/add';">New Question</button>
+         </div>
+    </div><br>
 
 </body>
 </html>

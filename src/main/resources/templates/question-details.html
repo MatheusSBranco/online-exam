@@ -8,16 +8,22 @@
     <title>Question Details</title>
 </head>
 <body>
-    <div>
-        <h1>Question Details</h1>
-    <table>
+    <div class="container">
+        <h1 class="mt-5">Question Details</h1>
+    <table class="table table-striped mt-5">
         <tr>
             <td>Statement:</td>
             <td th:text="${question.statement}"></td>
         </tr>
         <tr>
             <td>Type:</td>
-            <td th:text="${question.questionType}"></td>
+            <td>
+                <span th:if="${question.questionType == T(site.onlineexam.model.QuestionType).OPEN_ENDED}">Aberta</span>
+                <span th:if="${question.questionType == T(site.onlineexam.model.QuestionType).MULTIPLE_CHOICE_SINGLE_ANSWER}">Múltipla escolha com 1 certa</span>
+                <span th:if="${question.questionType == T(site.onlineexam.model.QuestionType).MULTIPLE_CHOICE_MULTIPLE_ANSWERS}">Múltipla escolha com várias certas</span>
+                <span th:if="${question.questionType == T(site.onlineexam.model.QuestionType).TRUE_FALSE}">Verdadeiro/Falso</span>
+
+            </td>
         </tr>
         <tr>
             <td>Difficulty:</td>
@@ -62,6 +68,9 @@
             </td>
         </tr>
         </table>
+        <div class="container-fluid">
+            <button class="btn btn-primary" onclick="window.location.href='/questions';">List of Questions</button>
+        </div>
     </div>    
 </body>
 </html>

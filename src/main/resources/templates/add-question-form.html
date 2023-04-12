@@ -67,7 +67,10 @@
                     <textarea class="form-control" name="correctAnswer" th:field="*{correctAnswer}" rows="4" required></textarea>
                 </div><br>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button class="btn btn-primary" onclick="window.location.href='/questions';">List of Questions</button>
+                </div>
             </form>
              <script type="text/javascript" th:src="@{/js/form-question.js}"></script>
     </body>
