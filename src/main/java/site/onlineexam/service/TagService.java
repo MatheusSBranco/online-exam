@@ -5,31 +5,44 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import site.onlineexam.model.Tag;
 import site.onlineexam.repository.TagRepository;
 
 @Service
 public class TagService {
     
-    private final TagRepository tagRepository;
+    private TagRepository tagRepository;
 
-    public TagService(TagRepository tagRepository) {
+    public TagService(TagRepository tagRepository){
         this.tagRepository = tagRepository;
+    }
+
+    public void addTag(Tag tag) {
+        tagRepository.save(tag);
     }
 
     public List<Tag> getAllTags() {
         return tagRepository.findAll();
     }
 
-    public Optional<Tag> getTagById(Long id) {
-        return tagRepository.findById(id);
+    public Tag getTagById(Long tagId) {
+        Optional<Tag> optionalTag = tagRepository.findById(tagId);
+        if (optionalTag.isPresent()) {
+            return optionalTag.get();
+        } else {
+            throw new EntityNotFoundException("Tag not found with id: " + tagId);
+        }
     }
 
-    public void saveTag(Tag tag) {
+    public void updateTag(Long tagId, Tag updatedTag) {
+        Tag tag = getTagById(tagId);
+        tag.setName(updatedTag.getName());
         tagRepository.save(tag);
     }
 
-    public void deleteTagById(Long id) {
-        tagRepository.deleteById(id);
+    public void deleteTag(Long tagId) {
+        Tag tag = getTagById(tagId);
+        tagRepository.delete(tag);
     }
 }

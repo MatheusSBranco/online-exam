@@ -1,4 +1,4 @@
-package site.onlineexam.utils;
+package site.onlineexam.model;
 
 public enum UserRole {
     STUDENT,

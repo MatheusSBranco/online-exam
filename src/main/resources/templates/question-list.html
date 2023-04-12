@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:util="java.util.*" xmlns:stream="java.util.stream.*">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/style/user-list.css}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Question List</title>
 </head>
@@ -13,40 +14,46 @@
         <h1>Question List</h1>
     </div>
     
-    <div class="table-responsive-sm">
+    <div class="container conteudo-meio">
         <table class="table table-striped table align-middle table-hover table-bordered table-sm table-group-divider">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Question Text</th>
+                    <th>Statement</th>
+                    <th>Type</th>
+                    <th>Difficulty</th>
                     <th>Discipline</th>
                     <th>Theme</th>
                     <th>Tags</th>
-                    <th>Question Type</th>
-                    <th>Difficulty Level</th>
+                    <th>Created by</th>
+                    <th>Created on</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="question : ${questions}">
-                    <td th:text="${question.id}"></td>
-                    <td th:text="${question.text}"></td>
+                    <td>
+                        <a th:href="@{/questions/{id}/details(id=${question.id})}">
+                            <span th:text="${question.statement}"></span>
+                        </a>
+                    </td>
+                    <td th:text="${question.questionType}"></td>
+                    <td th:text="${question.difficultyLevel}"></td>
                     <td th:text="${question.discipline.name}"></td>
                     <td th:text="${question.theme.name}"></td>
                     <td>
-                        <span th:each="tag : ${question.tags}" th:text="${tag.name}"></span>
+                        <span th:each="tag : ${question.tags}" th:text="${tag.name} + '  '"></span>
                     </td>
-                    <td th:text="${question.type}"></td>
-                    <td th:text="${question.difficulty}"></td>
+                    <td th:text="${question.createdBy}"></td>
+                    <td th:text="${question.creationDate}"></td>
                     <td>
-                        <a th:href="@{/questions/edit/{id}(id=${question.id})}">Edit</a>
-                        <a th:href="@{/questions/delete/{id}(id=${question.id})}">Delete</a>
+                        <a th:href="@{/questions/{id}/edit(id=${question.id})}">Edit</a>
+                        <a th:href="@{/questions/{id}/delete(id=${question.id})}">Delete</a>
                     </td>
                 </tr>
             </tbody>
         </table>
         
-        <a th:href="@{/questions/new}">New Question</a> 
+        <a th:href="@{/questions/add}">New Question</a> 
     </div>
 
 </body>

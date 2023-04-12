@@ -6,5 +6,4 @@ import site.onlineexam.model.Discipline;
 
 public interface DisciplineRepository extends JpaRepository<Discipline, Long>{
     
-    Discipline findByName(String name);
 }

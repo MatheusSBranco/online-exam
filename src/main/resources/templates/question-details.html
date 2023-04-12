@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Question Details</title>
+</head>
+<body>
+    <div>
+        <h1>Question Details</h1>
+    <table>
+        <tr>
+            <td>Statement:</td>
+            <td th:text="${question.statement}"></td>
+        </tr>
+        <tr>
+            <td>Type:</td>
+            <td th:text="${question.questionType}"></td>
+        </tr>
+        <tr>
+            <td>Difficulty:</td>
+            <td th:text="${question.difficultyLevel}"></td>
+        </tr>
+        <tr>
+            <td>Discipline:</td>
+            <td th:text="${question.discipline.name}"></td>
+        </tr>
+        <tr>
+            <td>Theme:</td>
+            <td th:text="${question.theme.name}"></td>
+        </tr>
+        <tr>
+            <td>Tags:</td>
+            <td>
+                <span th:each="tag : ${question.tags}" th:text="${tag.name} + '  '"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Created by:</td>
+            <td th:text="${question.createdBy}"></td>
+        </tr>
+        <tr>
+            <td>Created on:</td>
+            <td th:text="${question.creationDate}"></td>
+        </tr>
+        <tr>
+            <td>Answer:</td>
+            <td>
+                <ul>
+                    <li th:each="answer : ${question.answer}" th:text="${answer}"></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Correct Answer:</td>
+            <td>
+                <ul>
+                    <li th:each="correctAnswer : ${question.correctAnswer}" th:text="${correctAnswer}"></li>
+                </ul>
+            </td>
+        </tr>
+        </table>
+    </div>    
+</body>
+</html>
