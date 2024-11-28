@@ -1,15 +1,14 @@
 package site.onlineexam.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "disciplines")
@@ -21,11 +20,9 @@ public class Discipline {
 
     private String name;
 
-    @ElementCollection
     @OneToMany(mappedBy = "discipline")
     private Set<Question> questions = new HashSet<>();
 
-    @ElementCollection
     @OneToMany(mappedBy = "discipline")
     private Set<Theme> themes = new HashSet<>();
 
@@ -51,5 +48,13 @@ public class Discipline {
 
     public void setQuestions(Set<Question> questions) {
         this.questions = questions;
+    }
+
+    public Set<Theme> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(Set<Theme> themes) {
+        this.themes = themes;
     }
 }

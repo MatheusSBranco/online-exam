@@ -1,19 +1,20 @@
 package site.onlineexam.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import site.onlineexam.model.Theme;
 import site.onlineexam.repository.ThemeRepository;
+
+import java.util.List;
+
 @Service
 public class ThemeService {
 
-    private ThemeRepository themeRepository;
+    private final ThemeRepository themeRepository;
 
-    public ThemeService(ThemeRepository themeRepository){
+    @Autowired
+    public ThemeService(ThemeRepository themeRepository) {
         this.themeRepository = themeRepository;
     }
 
@@ -26,12 +27,8 @@ public class ThemeService {
     }
 
     public Theme getThemeById(Long themeId) {
-        Optional<Theme> optionalTheme = themeRepository.findById(themeId);
-        if (optionalTheme.isPresent()) {
-            return optionalTheme.get();
-        } else {
-            throw new EntityNotFoundException("Theme not found with id: " + themeId);
-        }
+        return themeRepository.findById(themeId)
+                .orElseThrow(() -> new EntityNotFoundException("Theme not found with id: " + themeId));
     }
 
     public void updateTheme(Long themeId, Theme updatedTheme) {

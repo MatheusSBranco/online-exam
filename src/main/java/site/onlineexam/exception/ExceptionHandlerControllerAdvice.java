@@ -10,42 +10,70 @@ import org.thymeleaf.exceptions.TemplateInputException;
 
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {
- 
-    @ExceptionHandler(Exception.class)
-    public String handleException(Model model, Exception e){
-        model.addAttribute("errorMsg", e.getMessage());
-        return "error";
-    }
 
+    private static final String ERROR_VIEW = "error";
+    private static final String ERROR_MSG_ATTRIBUTE = "errorMsg";
+
+    /**
+     * Handle HttpServerErrorException and return an error view with a specific message.
+     */
     @ExceptionHandler(HttpServerErrorException.class)
     public String handleServerError(Model model, HttpServerErrorException e) {
-        model.addAttribute("errorMsg", "Server Error: " + e.getStatusCode());
-        return "error";
+        addErrorMessage(model, "Server Error: " + e.getStatusCode());
+        return ERROR_VIEW;
     }
 
+    /**
+     * Handle HttpClientErrorException and return an error view with a specific message.
+     */
     @ExceptionHandler(HttpClientErrorException.class)
     public String handleClientError(Model model, HttpClientErrorException e) {
-        model.addAttribute("errorMsg", "Client Error: " + e.getStatusCode());
-        return "error";
+        addErrorMessage(model, "Client Error: " + e.getStatusCode());
+        return ERROR_VIEW;
     }
 
+    /**
+     * Handle IllegalArgumentException and return an error view with the exception message.
+     */
     @ExceptionHandler(IllegalArgumentException.class)
     public String handleIllegalArgumentException(Model model, IllegalArgumentException e) {
-        model.addAttribute("errorMsg", e.getMessage());
-        return "error";
+        addErrorMessage(model, e.getMessage());
+        return ERROR_VIEW;
     }
 
+    /**
+     * Handle UserException and return an error view with the exception message and additional data.
+     */
     @ExceptionHandler(UserException.class)
     public String handleUserException(Model model, UserException e) {
-        model.addAttribute("errorMsg", e.getMessage());
-        model.addAttribute("data", e.getData());
-        return "error";
+        addErrorMessage(model, e.getMessage());
+        model.addAttribute("additionalData", e.getAdditionalInfo());
+        return ERROR_VIEW;
     }
 
+    /**
+     * Handle TemplateInputException and return an error view with a specific message.
+     */
     @ExceptionHandler(TemplateInputException.class)
     public ModelAndView handleTemplateInputException(TemplateInputException ex) {
-        ModelAndView modelAndView = new ModelAndView("error");
-        modelAndView.addObject("errorMessage", "An error occurred while processing the template: " + ex.getMessage());
+        ModelAndView modelAndView = new ModelAndView(ERROR_VIEW);
+        modelAndView.addObject(ERROR_MSG_ATTRIBUTE, "An error occurred while processing the template: " + ex.getMessage());
         return modelAndView;
+    }
+
+    /**
+     * Handle generic Exception and return an error view with the exception message.
+     */
+    @ExceptionHandler(Exception.class)
+    public String handleException(Model model, Exception e) {
+        addErrorMessage(model, e.getMessage());
+        return ERROR_VIEW;
+    }
+
+    /**
+     * Utility method to add an error message to the model.
+     */
+    private void addErrorMessage(Model model, String message) {
+        model.addAttribute(ERROR_MSG_ATTRIBUTE, message);
     }
 }

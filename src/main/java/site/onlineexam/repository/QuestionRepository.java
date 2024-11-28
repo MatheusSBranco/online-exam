@@ -2,6 +2,7 @@ package site.onlineexam.repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,5 +16,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long>{
     
     List<Question> findByTheme(Theme theme);
     
-    List<Question> findByTagsIn(Collection<Tag> tags);
+    List<Question> findByTagsIn(Collection<Set<Tag>> tags);
 }

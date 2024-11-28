@@ -1,18 +1,19 @@
 package site.onlineexam.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import site.onlineexam.model.Discipline;
 import site.onlineexam.repository.DisciplineRepository;
 
+import java.util.List;
+
 @Service
 public class DisciplineService {
-    private DisciplineRepository disciplineRepository;
 
+    private final DisciplineRepository disciplineRepository;
+
+    @Autowired
     public DisciplineService(DisciplineRepository disciplineRepository) {
         this.disciplineRepository = disciplineRepository;
     }
@@ -26,12 +27,8 @@ public class DisciplineService {
     }
 
     public Discipline getDisciplineById(Long disciplineId) {
-        Optional<Discipline> optionalDiscipline = disciplineRepository.findById(disciplineId);
-        if (optionalDiscipline.isPresent()) {
-            return optionalDiscipline.get();
-        } else {
-            throw new EntityNotFoundException("Discipline not found with id: " + disciplineId);
-        }
+        return disciplineRepository.findById(disciplineId)
+                .orElseThrow(() -> new EntityNotFoundException("Discipline not found with id: " + disciplineId));
     }
 
     public void updateDiscipline(Long disciplineId, Discipline updatedDiscipline) {

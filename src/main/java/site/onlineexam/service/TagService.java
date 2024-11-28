@@ -1,20 +1,20 @@
 package site.onlineexam.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import site.onlineexam.model.Tag;
 import site.onlineexam.repository.TagRepository;
 
+import java.util.List;
+
 @Service
 public class TagService {
-    
-    private TagRepository tagRepository;
 
-    public TagService(TagRepository tagRepository){
+    private final TagRepository tagRepository;
+
+    @Autowired
+    public TagService(TagRepository tagRepository) {
         this.tagRepository = tagRepository;
     }
 
@@ -27,12 +27,8 @@ public class TagService {
     }
 
     public Tag getTagById(Long tagId) {
-        Optional<Tag> optionalTag = tagRepository.findById(tagId);
-        if (optionalTag.isPresent()) {
-            return optionalTag.get();
-        } else {
-            throw new EntityNotFoundException("Tag not found with id: " + tagId);
-        }
+        return tagRepository.findById(tagId)
+                .orElseThrow(() -> new EntityNotFoundException("Tag not found with id: " + tagId));
     }
 
     public void updateTag(Long tagId, Tag updatedTag) {

@@ -3,7 +3,6 @@ package site.onlineexam.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +22,6 @@ public class Theme {
 
     private String name;
 
-    @ElementCollection
     @OneToMany(mappedBy = "theme")
     private Set<Question> questions = new HashSet<>();
 
@@ -31,7 +29,6 @@ public class Theme {
     @JoinColumn(name = "discipline_id", nullable = false)
     private Discipline discipline;
 
-    @ElementCollection
     @OneToMany(mappedBy = "theme")
     private Set<Tag> tags = new HashSet<>();
 
@@ -57,5 +54,21 @@ public class Theme {
 
     public void setQuestions(Set<Question> questions) {
         this.questions = questions;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public Discipline getDiscipline() {
+        return discipline;
+    }
+
+    public void setDiscipline(Discipline discipline) {
+        this.discipline = discipline;
     }
 }
